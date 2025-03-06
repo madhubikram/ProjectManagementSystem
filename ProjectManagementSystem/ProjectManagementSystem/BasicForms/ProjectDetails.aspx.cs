@@ -19,20 +19,6 @@ namespace ProjectManagementSystem.BasicForms
             FormView1.PageIndex = e.NewPageIndex;
         }
 
-        protected void InsertButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void FormView1_PageIndexChanging1(object sender, FormViewPageEventArgs e)
-        {
-
-        }
-
-        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
         protected void btnSearch_Click(object sender, EventArgs e)
         {
             string searchTerm = txtSearch.Text.Trim();
@@ -48,6 +34,31 @@ namespace ProjectManagementSystem.BasicForms
                 SqlDataSource1.FilterParameters.Clear();
             }
             GridView1.DataBind();
+        }
+
+        protected void GridView1_PageIndexChanging(object sender, GridViewPageEventArgs e)
+        {
+            GridView1.PageIndex = e.NewPageIndex;
+            GridView1.DataBind();
+        }
+
+        protected string GetStatusBadgeClass(string status)
+        {
+            switch (status)
+            {
+                case "Completed":
+                    return "success";
+                case "In Progress":
+                    return "primary";
+                case "Not Started":
+                    return "secondary";
+                case "On Hold":
+                    return "warning";
+                case "Cancelled":
+                    return "danger";
+                default:
+                    return "info";
+            }
         }
     }
 }

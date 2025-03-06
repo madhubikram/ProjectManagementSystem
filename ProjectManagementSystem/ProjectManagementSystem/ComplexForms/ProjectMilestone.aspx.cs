@@ -13,5 +13,24 @@ namespace ProjectManagementSystem.ComplexForms
         {
 
         }
+
+        protected string GetStatusBadgeClass(string status)
+        {
+            switch (status)
+            {
+                case "Completed":
+                    return "success";
+                case "In Progress":
+                    return "primary";
+                case "Not Started":
+                    return "secondary";
+                case "On Hold":
+                    return "warning";
+                case "Cancelled":
+                    return "danger";
+                default:
+                    return "info";
+            }
+        }
     }
 }
