@@ -15,7 +15,7 @@
     <link href="~/Content/Site.css" rel="stylesheet" />
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
-    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         /* Updated styles for fixed navigation */
         body {

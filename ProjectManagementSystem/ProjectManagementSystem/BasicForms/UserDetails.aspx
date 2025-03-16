@@ -55,6 +55,16 @@
                             Display="Dynamic" CssClass="text-danger" ValidationGroup="InsertGroup" />
                     </div>
                 </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="ROLETextBox" class="form-label">Role:</label>
+                        <asp:TextBox ID="ROLETextBox" runat="server" Text='<%# Bind("ROLE") %>'
+                            CssClass="form-control" placeholder="Enter user role (e.g., Admin)" />
+                        <asp:RequiredFieldValidator ID="rfvRole" runat="server" 
+                            ControlToValidate="ROLETextBox" ErrorMessage="Role is required" 
+                            Display="Dynamic" CssClass="text-danger" ValidationGroup="InsertGroup" />
+                    </div>
+                </div>
                 <div class="mt-3">
                     <asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" 
                         CommandName="Insert" Text="Save" CssClass="btn btn-success" ValidationGroup="InsertGroup" />
@@ -120,6 +130,7 @@
                     <asp:BoundField DataField="USER_NAME" HeaderText="Name" SortExpression="USER_NAME" />
                     <asp:BoundField DataField="USER_EMAIL" HeaderText="Email" SortExpression="USER_EMAIL" />
                     <asp:BoundField DataField="USER_CONTACT_NO" HeaderText="Contact No" SortExpression="USER_CONTACT_NO" />
+                    <asp:BoundField DataField="ROLE" HeaderText="Role" SortExpression="ROLE" />
                 </Columns>
                 <HeaderStyle CssClass="GridViewHeader" />
                 <PagerStyle CssClass="pagination-container" HorizontalAlign="Center" />
@@ -131,28 +142,30 @@
         </div>
     </div>
     
-    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
-        DeleteCommand="DELETE FROM &quot;USERS&quot; WHERE &quot;USER_ID&quot; = :USER_ID" 
-        InsertCommand="INSERT INTO &quot;USERS&quot; (&quot;USER_ID&quot;, &quot;USER_NAME&quot;, &quot;USER_EMAIL&quot;, &quot;USER_CONTACT_NO&quot;) VALUES (:USER_ID, :USER_NAME, :USER_EMAIL, :USER_CONTACT_NO)" 
-        ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
-        SelectCommand="SELECT * FROM &quot;USERS&quot;" 
-        UpdateCommand="UPDATE &quot;USERS&quot; SET &quot;USER_NAME&quot; = :USER_NAME, &quot;USER_EMAIL&quot; = :USER_EMAIL, &quot;USER_CONTACT_NO&quot; = :USER_CONTACT_NO WHERE &quot;USER_ID&quot; = :USER_ID">
-        <DeleteParameters>
-            <asp:Parameter Name="USER_ID" Type="String" />
-        </DeleteParameters>
-        <InsertParameters>
-            <asp:Parameter Name="USER_ID" Type="String" />
-            <asp:Parameter Name="USER_NAME" Type="String" />
-            <asp:Parameter Name="USER_EMAIL" Type="String" />
-            <asp:Parameter Name="USER_CONTACT_NO" Type="String" />
-        </InsertParameters>
-        <UpdateParameters>
-            <asp:Parameter Name="USER_NAME" Type="String" />
-            <asp:Parameter Name="USER_EMAIL" Type="String" />
-            <asp:Parameter Name="USER_CONTACT_NO" Type="String" />
-            <asp:Parameter Name="USER_ID" Type="String" />
-        </UpdateParameters>
-    </asp:SqlDataSource>
+<asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
+    DeleteCommand="DELETE FROM USERS WHERE USER_ID = :USER_ID" 
+    InsertCommand="INSERT INTO USERS (USER_ID, USER_NAME, USER_EMAIL, USER_CONTACT_NO, ROLE) VALUES (:USER_ID, :USER_NAME, :USER_EMAIL, :USER_CONTACT_NO, :ROLE)" 
+    ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
+    SelectCommand="SELECT * FROM USERS" 
+    UpdateCommand="UPDATE USERS SET USER_NAME = :USER_NAME, USER_EMAIL = :USER_EMAIL, USER_CONTACT_NO = :USER_CONTACT_NO, ROLE = :ROLE WHERE USER_ID = :USER_ID">
+    <DeleteParameters>
+        <asp:Parameter Name="USER_ID" Type="String" />
+    </DeleteParameters>
+    <InsertParameters>
+        <asp:Parameter Name="USER_ID" Type="String" />
+        <asp:Parameter Name="USER_NAME" Type="String" />
+        <asp:Parameter Name="USER_EMAIL" Type="String" />
+        <asp:Parameter Name="USER_CONTACT_NO" Type="String" />
+        <asp:Parameter Name="ROLE" Type="String" />
+    </InsertParameters>
+    <UpdateParameters>
+        <asp:Parameter Name="USER_NAME" Type="String" />
+        <asp:Parameter Name="USER_EMAIL" Type="String" />
+        <asp:Parameter Name="USER_CONTACT_NO" Type="String" />
+        <asp:Parameter Name="ROLE" Type="String" />
+        <asp:Parameter Name="USER_ID" Type="String" />
+    </UpdateParameters>
+</asp:SqlDataSource>
     
     <script type="text/javascript">
         function confirmDelete() {

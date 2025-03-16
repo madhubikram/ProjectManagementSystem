@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Dashboard" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="ProjectManagementSystem._Default" %>
+<%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2 class="section-title">Project Management Dashboard</h2>
@@ -50,7 +51,77 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Charts Section -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Project Status Distribution</h5>
+                </div>
+                <div class="card-body">
+                    <asp:Chart ID="ChartProjectStatus" runat="server" DataSourceID="SqlDataSourceProjectStatus" Width="800px" Height="300px" Palette="BrightPastel" CssClass="chart-container">
+                        <Series>
+                            <asp:Series Name="Series1" ChartType="Pie" XValueMember="PROJECT_STATUS" YValueMembers="Count" />
+                        </Series>
+                        <ChartAreas>
+                            <asp:ChartArea Name="ChartArea1">
+                                <Area3DStyle Enable3D="true" Inclination="30" Rotation="30" />
+                            </asp:ChartArea>
+                        </ChartAreas>
+                        <Legends>
+                            <asp:Legend Name="Legend1" />
+                        </Legends>
+                    </asp:Chart>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Task Status by Project</h5>
+                </div>
+                <div class="card-body">
+                    <asp:Chart ID="ChartTaskStatus" runat="server" DataSourceID="SqlDataSourceTaskStatus" Width="800px" Height="300px" CssClass="chart-container">
+                        <Series>
+                            <asp:Series Name="Completed" ChartType="Column" XValueMember="PROJECT_NAME" YValueMembers="Completed" Color="Green" />
+                            <asp:Series Name="Pending" ChartType="Column" XValueMember="PROJECT_NAME" YValueMembers="Pending" Color="Red" />
+                        </Series>
+                        <ChartAreas>
+                            <asp:ChartArea Name="ChartArea1">
+                                <Area3DStyle Enable3D="true" />
+                            </asp:ChartArea>
+                        </ChartAreas>
+                        <Legends>
+                            <asp:Legend Name="Legend1" />
+                        </Legends>
+                    </asp:Chart>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Upcoming Milestones by Week</h5>
+                </div>
+                <div class="card-body">
+                    <asp:Chart ID="ChartMilestoneDue" runat="server" DataSourceID="SqlDataSourceMilestoneDue" Width="800px" Height="300px" CssClass="chart-container">
+                        <Series>
+                            <asp:Series Name="Series1" ChartType="Column" XValueMember="Week" YValueMembers="Count" />
+                        </Series>
+                        <ChartAreas>
+                            <asp:ChartArea Name="ChartArea1">
+                                <Area3DStyle Enable3D="true" />
+                            </asp:ChartArea>
+                        </ChartAreas>
+                    </asp:Chart>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Projects and Milestones -->
     <div class="row">
         <!-- Recent Projects -->
@@ -153,7 +224,40 @@
         </div>
     </div>
     
-    <!-- Data Sources -->
+    <!-- Data Sources for Charts -->
+    <asp:SqlDataSource ID="SqlDataSourceProjectStatus" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
+        ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
+        SelectCommand="SELECT PROJECT_STATUS, COUNT(*) as Count FROM PROJECTS GROUP BY PROJECT_STATUS">
+    </asp:SqlDataSource>
+
+<asp:SqlDataSource ID="SqlDataSourceTaskStatus" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
+    ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
+    SelectCommand="SELECT p.PROJECT_NAME,
+                          SUM(CASE WHEN t.TASK_STATUS = 'Completed' THEN 1 ELSE 0 END) as Completed,
+                          SUM(CASE WHEN t.TASK_STATUS IN ('Not Started', 'In Progress', 'On Hold') THEN 1 ELSE 0 END) as Pending
+                   FROM (
+                       SELECT DISTINCT project_id, task_id
+                       FROM user_project_task
+                   ) dt
+                   JOIN TASK t ON dt.task_id = t.task_id
+                   JOIN PROJECTS p ON dt.project_id = p.project_id
+                   GROUP BY p.PROJECT_NAME">
+</asp:SqlDataSource>
+
+<asp:SqlDataSource ID="SqlDataSourceMilestoneDue" runat="server" 
+    ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
+    ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
+    SelectCommand="SELECT TO_CHAR(m.MILESTONE_DUE_DATE, 'IYYY IW') as Week,
+                          COUNT(*) as Count
+                   FROM MILESTONES m
+                   WHERE m.MILESTONE_DUE_DATE >= TO_DATE('2024-01-01', 'YYYY-MM-DD')
+                   GROUP BY TO_CHAR(m.MILESTONE_DUE_DATE, 'IYYY IW')
+                   ORDER BY Week">
+</asp:SqlDataSource>
+
+    <!-- Existing Data Sources -->
     <asp:SqlDataSource ID="SqlDataSourceProjects" runat="server" 
         ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
         ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
@@ -178,7 +282,6 @@
                        ORDER BY t.task_start_date DESC">
     </asp:SqlDataSource>
     
-    <!-- Data sources for metric counts -->
     <asp:SqlDataSource ID="SqlDataSourceActiveProjects" runat="server" 
         ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
         ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"

@@ -56,6 +56,7 @@
                             <asp:ListItem Text="Completed" Value="Completed" />
                             <asp:ListItem Text="On Hold" Value="On Hold" />
                             <asp:ListItem Text="Cancelled" Value="Cancelled" />
+                            <asp:ListItem Text="Pending" Value="Pending" />
                         </asp:DropDownList>
                     </div>
                 </div>
@@ -137,23 +138,24 @@
                     <asp:BoundField DataField="SUBTASK_ID" HeaderText="ID" ReadOnly="True" SortExpression="SUBTASK_ID" />
                     <asp:BoundField DataField="SUBTASK_TITLE" HeaderText="Title" SortExpression="SUBTASK_TITLE" />
                     <asp:BoundField DataField="DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" SortExpression="DUE_DATE" />
-                    <asp:TemplateField HeaderText="Status" SortExpression="SUBTASK_STATUS">
-                        <ItemTemplate>
-                            <span class='badge bg-<%# GetStatusBadgeClass(Eval("SUBTASK_STATUS").ToString()) %>'>
-                                <%# Eval("SUBTASK_STATUS") %>
-                            </span>
-                        </ItemTemplate>
-                        <EditItemTemplate>
-                            <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-select form-select-sm"
-                                SelectedValue='<%# Bind("SUBTASK_STATUS") %>'>
-                                <asp:ListItem Text="Not Started" Value="Not Started" />
-                                <asp:ListItem Text="In Progress" Value="In Progress" />
-                                <asp:ListItem Text="Completed" Value="Completed" />
-                                <asp:ListItem Text="On Hold" Value="On Hold" />
-                                <asp:ListItem Text="Cancelled" Value="Cancelled" />
-                            </asp:DropDownList>
-                        </EditItemTemplate>
-                    </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Status" SortExpression="SUBTASK_STATUS">
+                            <ItemTemplate>
+                                <span class='badge bg-<%# GetStatusBadgeClass(Eval("SUBTASK_STATUS").ToString()) %>'>
+                                    <%# Eval("SUBTASK_STATUS") %>
+                                </span>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-select form-select-sm"
+                                    SelectedValue='<%# Bind("SUBTASK_STATUS") %>'>
+                                    <asp:ListItem Text="Not Started" Value="Not Started" />
+                                    <asp:ListItem Text="In Progress" Value="In Progress" />
+                                    <asp:ListItem Text="Completed" Value="Completed" />
+                                    <asp:ListItem Text="On Hold" Value="On Hold" />
+                                    <asp:ListItem Text="Cancelled" Value="Cancelled" />
+                                    <asp:ListItem Text="Pending" Value="Pending" />
+                                </asp:DropDownList>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
                     <asp:TemplateField HeaderText="Parent Task" SortExpression="TASK_ID">
                         <ItemTemplate>
                             <asp:DropDownList Enabled="false" ID="DropDownList2" runat="server" DataSourceID="sdsTaskNames" DataTextField="TASK_NAME" DataValueField="TASK_ID" SelectedValue='<%# Bind("TASK_ID") %>' CssClass="form-select form-select-sm">

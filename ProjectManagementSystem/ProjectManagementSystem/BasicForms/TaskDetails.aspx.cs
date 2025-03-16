@@ -11,7 +11,10 @@ namespace ProjectManagementSystem.BasicForms
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            if (!IsPostBack)
+            {
+                GridView1.DataBind(); // Ensure initial binding
+            }
         }
 
         protected void FormView1_PageIndexChanging(object sender, FormViewPageEventArgs e)
@@ -24,7 +27,7 @@ namespace ProjectManagementSystem.BasicForms
             string searchTerm = txtSearch.Text.Trim();
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                SqlDataSource1.FilterExpression = "TASK_NAME LIKE '%{0}%' OR TASK_ID LIKE '%{0}%' OR TASK_STATUS LIKE '%{0}%'";
+                SqlDataSource1.FilterExpression = "TASK_NAME LIKE '%{0}%' OR TASK_ID LIKE '%{0}%' OR TASK_STATUS LIKE '%{0}%' OR MILESTONE_ID LIKE '%{0}%'";
                 SqlDataSource1.FilterParameters.Clear();
                 SqlDataSource1.FilterParameters.Add(new ControlParameter("0", txtSearch.ID, "Text"));
             }
@@ -56,6 +59,8 @@ namespace ProjectManagementSystem.BasicForms
                     return "warning";
                 case "Cancelled":
                     return "danger";
+                case "Pending":
+                    return "info";
                 default:
                     return "info";
             }

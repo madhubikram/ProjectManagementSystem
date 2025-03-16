@@ -3,12 +3,10 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2 class="mb-4">Task Management</h2>
     
-    <!-- Toggle Button -->
     <button type="button" id="btnToggleForm" class="btn btn-primary create-button mb-3">
         <i class="bi bi-plus-circle"></i> Create New Task
     </button>
     
-    <!-- Task Insert Form Section (Initially Hidden) -->
     <div id="formContainer" class="form-toggle-container" style="display: none;">
         <asp:FormView ID="FormView1" runat="server" DataKeyNames="TASK_ID" 
             DataSourceID="SqlDataSource1" DefaultMode="Insert" 
@@ -73,6 +71,15 @@
                             <asp:ListItem Text="Completed" Value="Completed" />
                             <asp:ListItem Text="On Hold" Value="On Hold" />
                             <asp:ListItem Text="Cancelled" Value="Cancelled" />
+                            <asp:ListItem Text="Pending" Value="Pending" />
+                        </asp:DropDownList>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="MILESTONE_IDDropDown" class="form-label">Milestone:</label>
+                        <asp:DropDownList ID="MILESTONE_IDDropDown" runat="server" CssClass="form-select"
+                            DataSourceID="SqlDataSourceMilestones" DataTextField="MILESTONE_TITLE" DataValueField="MILESTONE_ID"
+                            SelectedValue='<%# Bind("MILESTONE_ID") %>' AppendDataBoundItems="true">
+                            <asp:ListItem Text="-- Select Milestone --" Value="" />
                         </asp:DropDownList>
                     </div>
                 </div>
@@ -90,7 +97,6 @@
         </asp:FormView>
     </div>
     
-    <!-- Task List Section -->
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center bg-dark text-white">
             <h5 class="mb-0">Task List</h5>
@@ -138,6 +144,18 @@
                         </EditItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="TASK_ID" HeaderText="ID" ReadOnly="True" SortExpression="TASK_ID" />
+                    <asp:TemplateField HeaderText="Milestone" SortExpression="MILESTONE_ID">
+                        <ItemTemplate>
+                            <asp:Label ID="lblMilestone" runat="server" Text='<%# Eval("MILESTONE_TITLE") %>' />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:DropDownList ID="ddlMilestone" runat="server" CssClass="form-select form-select-sm"
+                                DataSourceID="SqlDataSourceMilestones" DataTextField="MILESTONE_TITLE" DataValueField="MILESTONE_ID"
+                                SelectedValue='<%# Bind("MILESTONE_ID") %>' AppendDataBoundItems="true">
+                                <asp:ListItem Text="-- Select Milestone --" Value="" />
+                            </asp:DropDownList>
+                        </EditItemTemplate>
+                    </asp:TemplateField>
                     <asp:BoundField DataField="TASK_NAME" HeaderText="Task" SortExpression="TASK_NAME" />
                     <asp:BoundField DataField="TASK_START_DATE" HeaderText="Start Date" DataFormatString="{0:yyyy-MM-dd}" SortExpression="TASK_START_DATE" />
                     <asp:BoundField DataField="TASK_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" SortExpression="TASK_DUE_DATE" />
@@ -155,6 +173,7 @@
                                 <asp:ListItem Text="Completed" Value="Completed" />
                                 <asp:ListItem Text="On Hold" Value="On Hold" />
                                 <asp:ListItem Text="Cancelled" Value="Cancelled" />
+                                <asp:ListItem Text="Pending" Value="Pending" />
                             </asp:DropDownList>
                         </EditItemTemplate>
                     </asp:TemplateField>
@@ -170,11 +189,11 @@
     </div>
     
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
-        DeleteCommand="DELETE FROM &quot;TASK&quot; WHERE &quot;TASK_ID&quot; = :TASK_ID" 
-        InsertCommand="INSERT INTO &quot;TASK&quot; (&quot;TASK_ID&quot;, &quot;TASK_NAME&quot;, &quot;TASK_DESCRIPTION&quot;, &quot;TASK_STATUS&quot;, &quot;TASK_START_DATE&quot;, &quot;TASK_DUE_DATE&quot;) VALUES (:TASK_ID, :TASK_NAME, :TASK_DESCRIPTION, :TASK_STATUS, :TASK_START_DATE, :TASK_DUE_DATE)" 
+        DeleteCommand="DELETE FROM TASK WHERE TASK_ID = :TASK_ID" 
+        InsertCommand="INSERT INTO TASK (TASK_ID, TASK_NAME, TASK_DESCRIPTION, TASK_STATUS, TASK_START_DATE, TASK_DUE_DATE, MILESTONE_ID) VALUES (:TASK_ID, :TASK_NAME, :TASK_DESCRIPTION, :TASK_STATUS, :TASK_START_DATE, :TASK_DUE_DATE, :MILESTONE_ID)" 
         ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
-        SelectCommand="SELECT * FROM &quot;TASK&quot;" 
-        UpdateCommand="UPDATE &quot;TASK&quot; SET &quot;TASK_NAME&quot; = :TASK_NAME, &quot;TASK_DESCRIPTION&quot; = :TASK_DESCRIPTION, &quot;TASK_STATUS&quot; = :TASK_STATUS, &quot;TASK_START_DATE&quot; = :TASK_START_DATE, &quot;TASK_DUE_DATE&quot; = :TASK_DUE_DATE WHERE &quot;TASK_ID&quot; = :TASK_ID">
+        SelectCommand="SELECT t.*, m.MILESTONE_TITLE FROM TASK t LEFT JOIN MILESTONES m ON t.MILESTONE_ID = m.MILESTONE_ID" 
+        UpdateCommand="UPDATE TASK SET TASK_NAME = :TASK_NAME, TASK_DESCRIPTION = :TASK_DESCRIPTION, TASK_STATUS = :TASK_STATUS, TASK_START_DATE = :TASK_START_DATE, TASK_DUE_DATE = :TASK_DUE_DATE, MILESTONE_ID = :MILESTONE_ID WHERE TASK_ID = :TASK_ID">
         <DeleteParameters>
             <asp:Parameter Name="TASK_ID" Type="String" />
         </DeleteParameters>
@@ -185,6 +204,7 @@
             <asp:Parameter Name="TASK_STATUS" Type="String" />
             <asp:Parameter Name="TASK_START_DATE" Type="DateTime" />
             <asp:Parameter Name="TASK_DUE_DATE" Type="DateTime" />
+            <asp:Parameter Name="MILESTONE_ID" Type="String" />
         </InsertParameters>
         <UpdateParameters>
             <asp:Parameter Name="TASK_NAME" Type="String" />
@@ -192,16 +212,21 @@
             <asp:Parameter Name="TASK_STATUS" Type="String" />
             <asp:Parameter Name="TASK_START_DATE" Type="DateTime" />
             <asp:Parameter Name="TASK_DUE_DATE" Type="DateTime" />
+            <asp:Parameter Name="MILESTONE_ID" Type="String" />
             <asp:Parameter Name="TASK_ID" Type="String" />
         </UpdateParameters>
     </asp:SqlDataSource>
+
+    <asp:SqlDataSource ID="SqlDataSourceMilestones" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
+        ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
+        SelectCommand="SELECT MILESTONE_ID, MILESTONE_TITLE FROM MILESTONES" />
     
     <script type="text/javascript">
         function confirmDelete() {
             return confirm("Are you sure you want to delete this task?");
         }
 
-        // Form toggle functionality
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('btnToggleForm').addEventListener('click', function () {
                 toggleForm();
