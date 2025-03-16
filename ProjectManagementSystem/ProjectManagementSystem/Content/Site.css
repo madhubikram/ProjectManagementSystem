@@ -5,6 +5,11 @@ body {
     overflow-x: hidden;
 }
 
+.chart-container img {
+    max-width: 100%;
+    height: auto;
+}
+
 .wrapper {
     display: flex;
     width: 100%;

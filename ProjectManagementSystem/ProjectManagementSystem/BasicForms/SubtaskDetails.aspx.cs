@@ -50,6 +50,8 @@ namespace ProjectManagementSystem.BasicForms
                     return "warning";
                 case "Cancelled":
                     return "danger";
+                case "Pending":
+                    return "info";
                 default:
                     return "info";
             }
