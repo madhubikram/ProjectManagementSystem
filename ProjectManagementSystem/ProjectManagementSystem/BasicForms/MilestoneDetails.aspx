@@ -56,7 +56,7 @@
                         <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
                             ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
                             ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
-                            SelectCommand="SELECT &quot;PROJECT_ID&quot;, &quot;PROJECT_NAME&quot; FROM &quot;PROJECTS&quot;">
+                            SelectCommand='SELECT "PROJECT_ID", "PROJECT_NAME" FROM "PROJECTS"'>
                         </asp:SqlDataSource>
                     </div>
                 </div>
@@ -124,16 +124,33 @@
                     <asp:BoundField DataField="MILESTONE_ID" HeaderText="ID" ReadOnly="True" SortExpression="MILESTONE_ID" />
                     <asp:BoundField DataField="MILESTONE_TITLE" HeaderText="Title" SortExpression="MILESTONE_TITLE" />
                     <asp:BoundField DataField="MILESTONE_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" SortExpression="MILESTONE_DUE_DATE" />
+                    <asp:TemplateField HeaderText="Description" SortExpression="MILESTONE_DESCRIPTION">
+                        <ItemTemplate>
+                            <asp:Label ID="lblDescription" runat="server" Text='<%# Eval("MILESTONE_DESCRIPTION").ToString().Length > 50 ? Eval("MILESTONE_DESCRIPTION").ToString().Substring(0, 50) + "..." : Eval("MILESTONE_DESCRIPTION") %>'></asp:Label>
+                        </ItemTemplate>
+                    </asp:TemplateField>
                     <asp:TemplateField HeaderText="Project" SortExpression="PROJECT_ID">
                         <ItemTemplate>
-                            <asp:DropDownList Enabled="false" ID="DropDownList2" runat="server" DataSourceID="sdsProjectNames" DataTextField="PROJECT_NAME" DataValueField="PROJECT_ID" SelectedValue='<%# Bind("PROJECT_ID") %>' CssClass="form-select form-select-sm">
+                            <asp:DropDownList Enabled="false" ID="DropDownList2" runat="server" DataSourceID="sdsProjectNamesItem" 
+                                DataTextField="PROJECT_NAME" DataValueField="PROJECT_ID" SelectedValue='<%# Bind("PROJECT_ID") %>' 
+                                CssClass="form-select form-select-sm">
                             </asp:DropDownList>
-                            <asp:SqlDataSource ID="sdsProjectNames" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" SelectCommand="SELECT &quot;PROJECT_NAME&quot;, &quot;PROJECT_ID&quot; FROM &quot;PROJECTS&quot;"></asp:SqlDataSource>
+                            <asp:SqlDataSource ID="sdsProjectNamesItem" runat="server" 
+                                ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
+                                ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
+                                SelectCommand='SELECT "PROJECT_NAME", "PROJECT_ID" FROM "PROJECTS"'>
+                            </asp:SqlDataSource>
                         </ItemTemplate>
                         <EditItemTemplate>
-                            <asp:DropDownList ID="DropDownList3" runat="server" DataSourceID="sdsProjectNames" DataTextField="PROJECT_NAME" DataValueField="PROJECT_ID" SelectedValue='<%# Bind("PROJECT_ID") %>' CssClass="form-select form-select-sm">
+                            <asp:DropDownList ID="DropDownList3" runat="server" DataSourceID="sdsProjectNamesEdit" 
+                                DataTextField="PROJECT_NAME" DataValueField="PROJECT_ID" SelectedValue='<%# Bind("PROJECT_ID") %>' 
+                                CssClass="form-select form-select-sm">
                             </asp:DropDownList>
-                            <asp:SqlDataSource ID="sdsProjectNames" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" SelectCommand="SELECT &quot;PROJECT_NAME&quot;, &quot;PROJECT_ID&quot; FROM &quot;PROJECTS&quot;"></asp:SqlDataSource>
+                            <asp:SqlDataSource ID="sdsProjectNamesEdit" runat="server" 
+                                ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
+                                ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
+                                SelectCommand='SELECT "PROJECT_NAME", "PROJECT_ID" FROM "PROJECTS"'>
+                            </asp:SqlDataSource>
                         </EditItemTemplate>
                     </asp:TemplateField>
                 </Columns>
