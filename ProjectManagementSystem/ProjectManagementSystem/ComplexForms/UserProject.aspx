@@ -79,7 +79,7 @@
         InsertCommand="INSERT INTO &quot;USERS&quot; (&quot;USER_ID&quot;, &quot;USER_NAME&quot;) VALUES (:USER_ID, :USER_NAME)" 
         ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
         SelectCommand="SELECT &quot;USER_ID&quot;, &quot;USER_NAME&quot; FROM &quot;USERS&quot;" 
-        UpdateCommand="UPDATE &quot;USERS&quot; SET &quot;USER_NAME&quot; = :USER_NAME WHERE &quot;USER_ID&quot; = :USER_ID">
+        UpdateCommand="UPDATE &quot;USERS&quot; SET &quot;USER_NAME&quot; = :USER_NAME WHERE &quot;USER_ID&quot; = :USER_ID" OnSelecting="sdsUsers_Selecting">
         <DeleteParameters>
             <asp:Parameter Name="USER_ID" Type="String" />
         </DeleteParameters>
