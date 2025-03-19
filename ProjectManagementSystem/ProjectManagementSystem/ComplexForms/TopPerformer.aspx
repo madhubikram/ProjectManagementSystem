@@ -55,14 +55,16 @@
     
     <asp:SqlDataSource ID="sdsTopPerformers" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
         ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
-        SelectCommand="SELECT u.user_id, u.user_name, u.user_email, COUNT(t.task_id) AS tasks_completed
+        SelectCommand="SELECT * FROM (
+                       SELECT u.user_id, u.user_name, u.user_email, COUNT(t.task_id) AS tasks_completed
                        FROM users u, user_project_task upt, task t 
                        WHERE u.user_id = upt.user_id
                        AND upt.task_id = t.task_id
                        AND upt.project_id = :ProjectID
                        AND t.task_status = 'Completed'
                        GROUP BY u.user_id, u.user_name, u.user_email
-                       ORDER BY COUNT(t.task_id) DESC">
+                       ORDER BY COUNT(t.task_id) DESC)
+                       WHERE ROWNUM <= 3">
         <SelectParameters>
             <asp:ControlParameter ControlID="ddlProjects" Name="ProjectID" PropertyName="SelectedValue" />
         </SelectParameters>
