@@ -2,7 +2,7 @@
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <h2 class="mb-4">Top Performers</h2>
-    
+
     <div class="card mb-4">
         <div class="card-header bg-primary text-white">
             <h5 class="mb-0">Select Project</h5>
@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <label for="ddlProjects" class="form-label">Project:</label>
-                    <asp:DropDownList ID="ddlProjects" runat="server" AutoPostBack="True" 
+                    <asp:DropDownList ID="ddlProjects" runat="server" AutoPostBack="True"
                         DataSourceID="sdsProjects" DataTextField="PROJECT_NAME" DataValueField="PROJECT_ID"
                         CssClass="form-select">
                     </asp:DropDownList>
@@ -20,13 +20,13 @@
             </div>
         </div>
     </div>
-    
+
     <div class="card">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0">Top Performers</h5>
         </div>
         <div class="card-body p-0">
-            <asp:GridView ID="gvTopPerformers" runat="server" AutoGenerateColumns="False" 
+            <asp:GridView ID="gvTopPerformers" runat="server" AutoGenerateColumns="False"
                 DataKeyNames="USER_ID" DataSourceID="sdsTopPerformers"
                 CssClass="table table-striped table-hover mb-0"
                 BorderWidth="0px" GridLines="None">
@@ -39,6 +39,11 @@
                             <span class="badge bg-success"><%# Eval("TASKS_COMPLETED") %></span>
                         </ItemTemplate>
                     </asp:TemplateField>
+                    <asp:TemplateField HeaderText="Completed Tasks">
+                        <ItemTemplate>
+                            <%# Eval("completed_task_names") %>
+                        </ItemTemplate>
+                    </asp:TemplateField>
                 </Columns>
                 <HeaderStyle CssClass="bg-white" />
                 <EmptyDataTemplate>
@@ -47,17 +52,19 @@
             </asp:GridView>
         </div>
     </div>
-    
-    <asp:SqlDataSource ID="sdsProjects" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
-        ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
-        SelectCommand="SELECT &quot;PROJECT_ID&quot;, &quot;PROJECT_NAME&quot; FROM &quot;PROJECTS&quot; ORDER BY &quot;PROJECT_NAME&quot;">
+
+    <asp:SqlDataSource ID="sdsProjects" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
+        ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
+        SelectCommand='SELECT "PROJECT_ID", "PROJECT_NAME" FROM "PROJECTS" ORDER BY "PROJECT_NAME"'>
     </asp:SqlDataSource>
-    
-    <asp:SqlDataSource ID="sdsTopPerformers" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
-        ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
+
+    <asp:SqlDataSource ID="sdsTopPerformers" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
+        ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
         SelectCommand="SELECT * FROM (
-                       SELECT u.user_id, u.user_name, u.user_email, COUNT(t.task_id) AS tasks_completed
-                       FROM users u, user_project_task upt, task t 
+                       SELECT u.user_id, u.user_name, u.user_email, COUNT(t.task_id) AS tasks_completed,
+                              -- Add this line to fetch comma-separated task names
+                              LISTAGG(t.task_name, ', ') WITHIN GROUP (ORDER BY t.task_name) AS completed_task_names
+                       FROM users u, user_project_task upt, task t
                        WHERE u.user_id = upt.user_id
                        AND upt.task_id = t.task_id
                        AND upt.project_id = :ProjectID
