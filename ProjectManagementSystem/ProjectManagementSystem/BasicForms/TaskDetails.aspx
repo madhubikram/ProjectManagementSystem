@@ -157,6 +157,7 @@
                         </EditItemTemplate>
                     </asp:TemplateField>
                     <asp:BoundField DataField="TASK_NAME" HeaderText="Task" SortExpression="TASK_NAME" />
+                    <asp:BoundField DataField="TASK_DESCRIPTION" HeaderText="Description" SortExpression="TASK_DESCRIPTION" />
                     <asp:BoundField DataField="TASK_START_DATE" HeaderText="Start Date" DataFormatString="{0:yyyy-MM-dd}" SortExpression="TASK_START_DATE" />
                     <asp:BoundField DataField="TASK_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" SortExpression="TASK_DUE_DATE" />
                     <asp:TemplateField HeaderText="Status" SortExpression="TASK_STATUS">

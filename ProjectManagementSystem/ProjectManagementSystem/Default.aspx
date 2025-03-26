@@ -60,19 +60,22 @@
                     <h5 class="mb-0">Project Status Distribution</h5>
                 </div>
                 <div class="card-body">
-                    <asp:Chart ID="ChartProjectStatus" runat="server" DataSourceID="SqlDataSourceProjectStatus" Width="800px" Height="300px" Palette="BrightPastel" CssClass="chart-container">
-                        <Series>
-                            <asp:Series Name="Series1" ChartType="Pie" XValueMember="PROJECT_STATUS" YValueMembers="Count" />
-                        </Series>
-                        <ChartAreas>
-                            <asp:ChartArea Name="ChartArea1">
-                                <Area3DStyle Enable3D="true" Inclination="30" Rotation="30" />
-                            </asp:ChartArea>
-                        </ChartAreas>
-                        <Legends>
-                            <asp:Legend Name="Legend1" />
-                        </Legends>
-                    </asp:Chart>
+                    <div class="chart-responsive">
+                        <asp:Chart ID="ChartProjectStatus" runat="server" DataSourceID="SqlDataSourceProjectStatus" 
+                            Width="800px" Height="300px" Palette="BrightPastel" CssClass="img-fluid">
+                            <Series>
+                                <asp:Series Name="Series1" ChartType="Pie" XValueMember="PROJECT_STATUS" YValueMembers="Count" />
+                            </Series>
+                            <ChartAreas>
+                                <asp:ChartArea Name="ChartArea1">
+                                    <Area3DStyle Enable3D="true" Inclination="30" Rotation="30" />
+                                </asp:ChartArea>
+                            </ChartAreas>
+                            <Legends>
+                                <asp:Legend Name="Legend1" />
+                            </Legends>
+                        </asp:Chart>
+                    </div>
                 </div>
             </div>
         </div>
@@ -82,20 +85,23 @@
                     <h5 class="mb-0">Task Status by Project</h5>
                 </div>
                 <div class="card-body">
-                    <asp:Chart ID="ChartTaskStatus" runat="server" DataSourceID="SqlDataSourceTaskStatus" Width="800px" Height="300px" CssClass="chart-container">
-                        <Series>
-                            <asp:Series Name="Completed" ChartType="Column" XValueMember="PROJECT_NAME" YValueMembers="Completed" Color="Green" />
-                            <asp:Series Name="Pending" ChartType="Column" XValueMember="PROJECT_NAME" YValueMembers="Pending" Color="Red" />
-                        </Series>
-                        <ChartAreas>
-                            <asp:ChartArea Name="ChartArea1">
-                                <Area3DStyle Enable3D="true" />
-                            </asp:ChartArea>
-                        </ChartAreas>
-                        <Legends>
-                            <asp:Legend Name="Legend1" />
-                        </Legends>
-                    </asp:Chart>
+                    <div class="chart-responsive">
+                        <asp:Chart ID="ChartTaskStatus" runat="server" DataSourceID="SqlDataSourceTaskStatus" 
+                            Width="800px" Height="300px" CssClass="img-fluid">
+                            <Series>
+                                <asp:Series Name="Completed" ChartType="Column" XValueMember="PROJECT_NAME" YValueMembers="Completed" Color="Green" />
+                                <asp:Series Name="Pending" ChartType="Column" XValueMember="PROJECT_NAME" YValueMembers="Pending" Color="Red" />
+                            </Series>
+                            <ChartAreas>
+                                <asp:ChartArea Name="ChartArea1">
+                                    <Area3DStyle Enable3D="true" />
+                                </asp:ChartArea>
+                            </ChartAreas>
+                            <Legends>
+                                <asp:Legend Name="Legend1" />
+                            </Legends>
+                        </asp:Chart>
+                    </div>
                 </div>
             </div>
         </div>
@@ -107,16 +113,19 @@
                     <h5 class="mb-0">Upcoming Milestones by Week</h5>
                 </div>
                 <div class="card-body">
-                    <asp:Chart ID="ChartMilestoneDue" runat="server" DataSourceID="SqlDataSourceMilestoneDue" Width="800px" Height="300px" CssClass="chart-container">
-                        <Series>
-                            <asp:Series Name="Series1" ChartType="Column" XValueMember="Week" YValueMembers="Count" />
-                        </Series>
-                        <ChartAreas>
-                            <asp:ChartArea Name="ChartArea1">
-                                <Area3DStyle Enable3D="true" />
-                            </asp:ChartArea>
-                        </ChartAreas>
-                    </asp:Chart>
+                    <div class="chart-responsive">
+                        <asp:Chart ID="ChartMilestoneDue" runat="server" DataSourceID="SqlDataSourceMilestoneDue" 
+                            Width="800px" Height="300px" CssClass="img-fluid">
+                            <Series>
+                                <asp:Series Name="Series1" ChartType="Column" XValueMember="Week" YValueMembers="Count" />
+                            </Series>
+                            <ChartAreas>
+                                <asp:ChartArea Name="ChartArea1">
+                                    <Area3DStyle Enable3D="true" />
+                                </asp:ChartArea>
+                            </ChartAreas>
+                        </asp:Chart>
+                    </div>
                 </div>
             </div>
         </div>
@@ -131,29 +140,31 @@
                     <h5 class="mb-0">Recent Projects</h5>
                 </div>
                 <div class="card-body p-0">
-                    <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
-                        CssClass="table table-striped table-hover mb-0"
-                        BorderWidth="0px" GridLines="None" DataSourceID="SqlDataSourceProjects"
-                        AllowPaging="True" PageSize="5" 
-                        OnPageIndexChanging="GridView1_PageIndexChanging">
-                        <Columns>
-                            <asp:BoundField DataField="PROJECT_NAME" HeaderText="Project" />
-                            <asp:BoundField DataField="PROJECT_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" />
-                            <asp:TemplateField HeaderText="Status">
-                                <ItemTemplate>
-                                    <span class='badge bg-<%# GetStatusBadgeClass(Eval("PROJECT_STATUS").ToString()) %>'>
-                                        <%# Eval("PROJECT_STATUS") %>
-                                    </span>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <PagerStyle CssClass="pagination-container bg-light" HorizontalAlign="Center" />
-                        <PagerSettings Mode="NumericFirstLast" PageButtonCount="5" FirstPageText="First" LastPageText="Last" />
-                        <HeaderStyle CssClass="table-light text-dark" />
-                        <EmptyDataTemplate>
-                            <div class="alert alert-info m-3">No projects found.</div>
-                        </EmptyDataTemplate>
-                    </asp:GridView>
+                    <div class="table-responsive">
+                        <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" 
+                            CssClass="table table-striped table-hover mb-0"
+                            BorderWidth="0px" GridLines="None" DataSourceID="SqlDataSourceProjects"
+                            AllowPaging="True" PageSize="5" 
+                            OnPageIndexChanging="GridView1_PageIndexChanging">
+                            <Columns>
+                                <asp:BoundField DataField="PROJECT_NAME" HeaderText="Project" />
+                                <asp:BoundField DataField="PROJECT_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" />
+                                <asp:TemplateField HeaderText="Status">
+                                    <ItemTemplate>
+                                        <span class='badge bg-<%# GetStatusBadgeClass(Eval("PROJECT_STATUS").ToString()) %>'>
+                                            <%# Eval("PROJECT_STATUS") %>
+                                        </span>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                            <PagerStyle CssClass="pagination-container bg-light" HorizontalAlign="Center" />
+                            <PagerSettings Mode="NumericFirstLast" PageButtonCount="5" FirstPageText="First" LastPageText="Last" />
+                            <HeaderStyle CssClass="table-light text-dark" />
+                            <EmptyDataTemplate>
+                                <div class="alert alert-info m-3">No projects found.</div>
+                            </EmptyDataTemplate>
+                        </asp:GridView>
+                    </div>
                 </div>
             </div>
         </div>
@@ -165,23 +176,25 @@
                     <h5 class="mb-0">Upcoming Milestones</h5>
                 </div>
                 <div class="card-body p-0">
-                    <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" 
-                        CssClass="table table-striped table-hover mb-0"
-                        BorderWidth="0px" GridLines="None" DataSourceID="SqlDataSourceMilestones"
-                        AllowPaging="True" PageSize="5"
-                        OnPageIndexChanging="GridView2_PageIndexChanging">
-                        <Columns>
-                            <asp:BoundField DataField="MILESTONE_TITLE" HeaderText="Milestone" />
-                            <asp:BoundField DataField="PROJECT_NAME" HeaderText="Project" />
-                            <asp:BoundField DataField="MILESTONE_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" />
-                        </Columns>
-                        <PagerStyle CssClass="pagination-container bg-light" HorizontalAlign="Center" />
-                        <PagerSettings Mode="NumericFirstLast" PageButtonCount="5" FirstPageText="First" LastPageText="Last" />
-                        <HeaderStyle CssClass="table-light text-dark" />
-                        <EmptyDataTemplate>
-                            <div class="alert alert-info m-3">No upcoming milestones.</div>
-                        </EmptyDataTemplate>
-                    </asp:GridView>
+                    <div class="table-responsive">
+                        <asp:GridView ID="GridView2" runat="server" AutoGenerateColumns="False" 
+                            CssClass="table table-striped table-hover mb-0"
+                            BorderWidth="0px" GridLines="None" DataSourceID="SqlDataSourceMilestones"
+                            AllowPaging="True" PageSize="5"
+                            OnPageIndexChanging="GridView2_PageIndexChanging">
+                            <Columns>
+                                <asp:BoundField DataField="MILESTONE_TITLE" HeaderText="Milestone" />
+                                <asp:BoundField DataField="PROJECT_NAME" HeaderText="Project" />
+                                <asp:BoundField DataField="MILESTONE_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" />
+                            </Columns>
+                            <PagerStyle CssClass="pagination-container bg-light" HorizontalAlign="Center" />
+                            <PagerSettings Mode="NumericFirstLast" PageButtonCount="5" FirstPageText="First" LastPageText="Last" />
+                            <HeaderStyle CssClass="table-light text-dark" />
+                            <EmptyDataTemplate>
+                                <div class="alert alert-info m-3">No upcoming milestones.</div>
+                            </EmptyDataTemplate>
+                        </asp:GridView>
+                    </div>
                 </div>
             </div>
         </div>
@@ -195,30 +208,32 @@
                     <h5 class="mb-0">Recent Tasks</h5>
                 </div>
                 <div class="card-body p-0">
-                    <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="False" 
-                        CssClass="table table-striped table-hover mb-0"
-                        BorderWidth="0px" GridLines="None" DataSourceID="SqlDataSourceTasks"
-                        AllowPaging="True" PageSize="5"
-                        OnPageIndexChanging="GridView3_PageIndexChanging">
-                        <Columns>
-                            <asp:BoundField DataField="TASK_NAME" HeaderText="Task" />
-                            <asp:BoundField DataField="PROJECT_NAME" HeaderText="Project" />
-                            <asp:BoundField DataField="TASK_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" />
-                            <asp:TemplateField HeaderText="Status">
-                                <ItemTemplate>
-                                    <span class='badge bg-<%# GetTaskStatusBadgeClass(Eval("TASK_STATUS").ToString()) %>'>
-                                        <%# Eval("TASK_STATUS") %>
-                                    </span>
-                                </ItemTemplate>
-                            </asp:TemplateField>
-                        </Columns>
-                        <PagerStyle CssClass="pagination-container bg-light" HorizontalAlign="Center" />
-                        <PagerSettings Mode="NumericFirstLast" PageButtonCount="5" FirstPageText="First" LastPageText="Last" />
-                        <HeaderStyle CssClass="table-light text-dark" />
-                        <EmptyDataTemplate>
-                            <div class="alert alert-info m-3">No recent tasks.</div>
-                        </EmptyDataTemplate>
-                    </asp:GridView>
+                    <div class="table-responsive">
+                        <asp:GridView ID="GridView3" runat="server" AutoGenerateColumns="False" 
+                            CssClass="table table-striped table-hover mb-0"
+                            BorderWidth="0px" GridLines="None" DataSourceID="SqlDataSourceTasks"
+                            AllowPaging="True" PageSize="5"
+                            OnPageIndexChanging="GridView3_PageIndexChanging">
+                            <Columns>
+                                <asp:BoundField DataField="TASK_NAME" HeaderText="Task" />
+                                <asp:BoundField DataField="PROJECT_NAME" HeaderText="Project" />
+                                <asp:BoundField DataField="TASK_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" />
+                                <asp:TemplateField HeaderText="Status">
+                                    <ItemTemplate>
+                                        <span class='badge bg-<%# GetTaskStatusBadgeClass(Eval("TASK_STATUS").ToString()) %>'>
+                                            <%# Eval("TASK_STATUS") %>
+                                        </span>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                            <PagerStyle CssClass="pagination-container bg-light" HorizontalAlign="Center" />
+                            <PagerSettings Mode="NumericFirstLast" PageButtonCount="5" FirstPageText="First" LastPageText="Last" />
+                            <HeaderStyle CssClass="table-light text-dark" />
+                            <EmptyDataTemplate>
+                                <div class="alert alert-info m-3">No recent tasks.</div>
+                            </EmptyDataTemplate>
+                        </asp:GridView>
+                    </div>
                 </div>
             </div>
         </div>
@@ -231,31 +246,31 @@
         SelectCommand="SELECT PROJECT_STATUS, COUNT(*) as Count FROM PROJECTS GROUP BY PROJECT_STATUS">
     </asp:SqlDataSource>
 
-<asp:SqlDataSource ID="SqlDataSourceTaskStatus" runat="server" 
-    ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
-    ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
-    SelectCommand="SELECT p.PROJECT_NAME,
-                          SUM(CASE WHEN t.TASK_STATUS = 'Completed' THEN 1 ELSE 0 END) as Completed,
-                          SUM(CASE WHEN t.TASK_STATUS IN ('Not Started', 'In Progress', 'On Hold') THEN 1 ELSE 0 END) as Pending
-                   FROM (
-                       SELECT DISTINCT project_id, task_id
-                       FROM user_project_task
-                   ) dt
-                   JOIN TASK t ON dt.task_id = t.task_id
-                   JOIN PROJECTS p ON dt.project_id = p.project_id
-                   GROUP BY p.PROJECT_NAME">
-</asp:SqlDataSource>
+    <asp:SqlDataSource ID="SqlDataSourceTaskStatus" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
+        ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
+        SelectCommand="SELECT p.PROJECT_NAME,
+                              SUM(CASE WHEN t.TASK_STATUS = 'Completed' THEN 1 ELSE 0 END) as Completed,
+                              SUM(CASE WHEN t.TASK_STATUS IN ('Not Started', 'In Progress', 'On Hold') THEN 1 ELSE 0 END) as Pending
+                       FROM (
+                           SELECT DISTINCT project_id, task_id
+                           FROM user_project_task
+                       ) dt
+                       JOIN TASK t ON dt.task_id = t.task_id
+                       JOIN PROJECTS p ON dt.project_id = p.project_id
+                       GROUP BY p.PROJECT_NAME">
+    </asp:SqlDataSource>
 
-<asp:SqlDataSource ID="SqlDataSourceMilestoneDue" runat="server" 
-    ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
-    ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
-    SelectCommand="SELECT TO_CHAR(m.MILESTONE_DUE_DATE, 'IYYY IW') as Week,
-                          COUNT(*) as Count
-                   FROM MILESTONES m
-                   WHERE m.MILESTONE_DUE_DATE >= TO_DATE('2024-01-01', 'YYYY-MM-DD')
-                   GROUP BY TO_CHAR(m.MILESTONE_DUE_DATE, 'IYYY IW')
-                   ORDER BY Week">
-</asp:SqlDataSource>
+    <asp:SqlDataSource ID="SqlDataSourceMilestoneDue" runat="server" 
+        ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>"
+        ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
+        SelectCommand="SELECT TO_CHAR(m.MILESTONE_DUE_DATE, 'IYYY IW') as Week,
+                              COUNT(*) as Count
+                       FROM MILESTONES m
+                       WHERE m.MILESTONE_DUE_DATE >= TO_DATE('2024-01-01', 'YYYY-MM-DD')
+                       GROUP BY TO_CHAR(m.MILESTONE_DUE_DATE, 'IYYY IW')
+                       ORDER BY Week">
+    </asp:SqlDataSource>
 
     <!-- Existing Data Sources -->
     <asp:SqlDataSource ID="SqlDataSourceProjects" runat="server" 
@@ -305,4 +320,20 @@
         ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>"
         SelectCommand="SELECT user_id FROM users">
     </asp:SqlDataSource>
+    
+    <style type="text/css">
+        /* Add responsive chart styling */
+        .chart-responsive {
+            width: 100%;
+            overflow: hidden;
+        }
+        .chart-responsive .img-fluid {
+            max-width: 100%;
+            height: auto;
+        }
+        /* Ensure tables don't overflow */
+        .table-responsive {
+            overflow-x: auto;
+        }
+    </style>
 </asp:Content>
