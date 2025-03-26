@@ -70,7 +70,7 @@
                         <asp:SqlDataSource ID="SqlDataSource2" runat="server" 
                             ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
                             ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
-                            SelectCommand='SELECT "TASK_ID", "TASK_NAME" FROM "TASK"'>
+                            SelectCommand="SELECT &quot;TASK_ID&quot;, &quot;TASK_NAME&quot; FROM &quot;TASK&quot;">
                         </asp:SqlDataSource>
                     </div>
                 </div>
@@ -137,36 +137,35 @@
                     </asp:TemplateField>
                     <asp:BoundField DataField="SUBTASK_ID" HeaderText="ID" ReadOnly="True" SortExpression="SUBTASK_ID" />
                     <asp:BoundField DataField="SUBTASK_TITLE" HeaderText="Title" SortExpression="SUBTASK_TITLE" />
-                    <asp:BoundField DataField="SUBTASK_DESCRIPTION" HeaderText="Description" SortExpression="SUBTASK_DESCRIPTION" />
                     <asp:BoundField DataField="DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" SortExpression="DUE_DATE" />
-                    <asp:TemplateField HeaderText="Status" SortExpression="SUBTASK_STATUS">
-                        <ItemTemplate>
-                            <span class='badge bg-<%# GetStatusBadgeClass(Eval("SUBTASK_STATUS").ToString()) %>'>
-                                <%# Eval("SUBTASK_STATUS") %>
-                            </span>
-                        </ItemTemplate>
-                        <EditItemTemplate>
-                            <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-select form-select-sm"
-                                SelectedValue='<%# Bind("SUBTASK_STATUS") %>'>
-                                <asp:ListItem Text="Not Started" Value="Not Started" />
-                                <asp:ListItem Text="In Progress" Value="In Progress" />
-                                <asp:ListItem Text="Completed" Value="Completed" />
-                                <asp:ListItem Text="On Hold" Value="On Hold" />
-                                <asp:ListItem Text="Cancelled" Value="Cancelled" />
-                                <asp:ListItem Text="Pending" Value="Pending" />
-                            </asp:DropDownList>
-                        </EditItemTemplate>
-                    </asp:TemplateField>
+                        <asp:TemplateField HeaderText="Status" SortExpression="SUBTASK_STATUS">
+                            <ItemTemplate>
+                                <span class='badge bg-<%# GetStatusBadgeClass(Eval("SUBTASK_STATUS").ToString()) %>'>
+                                    <%# Eval("SUBTASK_STATUS") %>
+                                </span>
+                            </ItemTemplate>
+                            <EditItemTemplate>
+                                <asp:DropDownList ID="ddlStatus" runat="server" CssClass="form-select form-select-sm"
+                                    SelectedValue='<%# Bind("SUBTASK_STATUS") %>'>
+                                    <asp:ListItem Text="Not Started" Value="Not Started" />
+                                    <asp:ListItem Text="In Progress" Value="In Progress" />
+                                    <asp:ListItem Text="Completed" Value="Completed" />
+                                    <asp:ListItem Text="On Hold" Value="On Hold" />
+                                    <asp:ListItem Text="Cancelled" Value="Cancelled" />
+                                    <asp:ListItem Text="Pending" Value="Pending" />
+                                </asp:DropDownList>
+                            </EditItemTemplate>
+                        </asp:TemplateField>
                     <asp:TemplateField HeaderText="Parent Task" SortExpression="TASK_ID">
                         <ItemTemplate>
                             <asp:DropDownList Enabled="false" ID="DropDownList2" runat="server" DataSourceID="sdsTaskNames" DataTextField="TASK_NAME" DataValueField="TASK_ID" SelectedValue='<%# Bind("TASK_ID") %>' CssClass="form-select form-select-sm">
                             </asp:DropDownList>
-                            <asp:SqlDataSource ID="sdsTaskNames" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" SelectCommand='SELECT "TASK_NAME", "TASK_ID" FROM "TASK"'></asp:SqlDataSource>
+                            <asp:SqlDataSource ID="sdsTaskNames" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" SelectCommand="SELECT &quot;TASK_NAME&quot;, &quot;TASK_ID&quot; FROM &quot;TASK&quot;"></asp:SqlDataSource>
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:DropDownList ID="DropDownList3" runat="server" DataSourceID="sdsTaskNames" DataTextField="TASK_NAME" DataValueField="TASK_ID" SelectedValue='<%# Bind("TASK_ID") %>' CssClass="form-select form-select-sm">
                             </asp:DropDownList>
-                            <asp:SqlDataSource ID="sdsTaskNames" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" SelectCommand='SELECT "TASK_NAME", "TASK_ID" FROM "TASK"'></asp:SqlDataSource>
+                            <asp:SqlDataSource ID="sdsTaskNames" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" SelectCommand="SELECT &quot;TASK_NAME&quot;, &quot;TASK_ID&quot; FROM &quot;TASK&quot;"></asp:SqlDataSource>
                         </EditItemTemplate>
                     </asp:TemplateField>
                 </Columns>
@@ -181,11 +180,11 @@
     </div>
     
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
-        DeleteCommand='DELETE FROM "SUB_TASK" WHERE "SUBTASK_ID" = :SUBTASK_ID' 
-        InsertCommand='INSERT INTO "SUB_TASK" ("SUBTASK_ID", "SUBTASK_TITLE", "SUBTASK_STATUS", "DUE_DATE", "SUBTASK_DESCRIPTION", "TASK_ID") VALUES (:SUBTASK_ID, :SUBTASK_TITLE, :SUBTASK_STATUS, :DUE_DATE, :SUBTASK_DESCRIPTION, :TASK_ID)' 
+        DeleteCommand="DELETE FROM &quot;SUB_TASK&quot; WHERE &quot;SUBTASK_ID&quot; = :SUBTASK_ID" 
+        InsertCommand="INSERT INTO &quot;SUB_TASK&quot; (&quot;SUBTASK_ID&quot;, &quot;SUBTASK_TITLE&quot;, &quot;SUBTASK_STATUS&quot;, &quot;DUE_DATE&quot;, &quot;SUBTASK_DESCRIPTION&quot;, &quot;TASK_ID&quot;) VALUES (:SUBTASK_ID, :SUBTASK_TITLE, :SUBTASK_STATUS, :DUE_DATE, :SUBTASK_DESCRIPTION, :TASK_ID)" 
         ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
-        SelectCommand='SELECT * FROM "SUB_TASK"' 
-        UpdateCommand='UPDATE "SUB_TASK" SET "SUBTASK_TITLE" = :SUBTASK_TITLE, "SUBTASK_STATUS" = :SUBTASK_STATUS, "DUE_DATE" = :DUE_DATE, "SUBTASK_DESCRIPTION" = :SUBTASK_DESCRIPTION, "TASK_ID" = :TASK_ID WHERE "SUBTASK_ID" = :SUBTASK_ID'>
+        SelectCommand="SELECT * FROM &quot;SUB_TASK&quot;" 
+        UpdateCommand="UPDATE &quot;SUB_TASK&quot; SET &quot;SUBTASK_TITLE&quot; = :SUBTASK_TITLE, &quot;SUBTASK_STATUS&quot; = :SUBTASK_STATUS, &quot;DUE_DATE&quot; = :DUE_DATE, &quot;SUBTASK_DESCRIPTION&quot; = :SUBTASK_DESCRIPTION, &quot;TASK_ID&quot; = :TASK_ID WHERE &quot;SUBTASK_ID&quot; = :SUBTASK_ID">
         <DeleteParameters>
             <asp:Parameter Name="SUBTASK_ID" Type="String" />
         </DeleteParameters>

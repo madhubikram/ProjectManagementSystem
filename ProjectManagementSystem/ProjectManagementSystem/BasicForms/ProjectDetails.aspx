@@ -8,7 +8,7 @@
         <i class="bi bi-plus-circle"></i> Create New Project
     </button>
     
-    <!-- Project Insert Form Section (Initially Hidden) -->
+    <!-- Project Insert Form Section -->
     <div id="formContainer" class="form-toggle-container" style="display: none;">
         <asp:FormView ID="FormView1" runat="server" DataKeyNames="PROJECT_ID" 
             DataSourceID="SqlDataSource1" DefaultMode="Insert" 
