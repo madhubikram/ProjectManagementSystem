@@ -126,8 +126,15 @@
                     <asp:BoundField DataField="MILESTONE_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" SortExpression="MILESTONE_DUE_DATE" />
                     <asp:TemplateField HeaderText="Description" SortExpression="MILESTONE_DESCRIPTION">
                         <ItemTemplate>
-                            <asp:Label ID="lblDescription" runat="server" Text='<%# Eval("MILESTONE_DESCRIPTION").ToString().Length > 50 ? Eval("MILESTONE_DESCRIPTION").ToString().Substring(0, 50) + "..." : Eval("MILESTONE_DESCRIPTION") %>'></asp:Label>
+                            <asp:Label ID="lblDescription" runat="server" 
+                                Text='<%# Eval("MILESTONE_DESCRIPTION").ToString().Length > 50 ? Eval("MILESTONE_DESCRIPTION").ToString().Substring(0, 50) + "..." : Eval("MILESTONE_DESCRIPTION") %>'>
+                            </asp:Label>
                         </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtDescriptionEdit" runat="server" 
+                                Text='<%# Bind("MILESTONE_DESCRIPTION") %>' CssClass="form-control" TextMode="MultiLine" Rows="3">
+                            </asp:TextBox>
+                        </EditItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField HeaderText="Project" SortExpression="PROJECT_ID">
                         <ItemTemplate>

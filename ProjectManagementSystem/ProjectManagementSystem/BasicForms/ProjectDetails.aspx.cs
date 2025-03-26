@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 
 namespace ProjectManagementSystem.BasicForms
@@ -11,12 +7,10 @@ namespace ProjectManagementSystem.BasicForms
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-        }
-
-        protected void FormView1_PageIndexChanging(object sender, FormViewPageEventArgs e)
-        {
-            FormView1.PageIndex = e.NewPageIndex;
+            if (!IsPostBack)
+            {
+              
+            }
         }
 
         protected void btnSearch_Click(object sender, EventArgs e)
@@ -24,14 +18,20 @@ namespace ProjectManagementSystem.BasicForms
             string searchTerm = txtSearch.Text.Trim();
             if (!string.IsNullOrEmpty(searchTerm))
             {
-                SqlDataSource1.FilterExpression = "PROJECT_NAME LIKE '%{0}%' OR PROJECT_ID LIKE '%{0}%' OR PROJECT_STATUS LIKE '%{0}%'";
-                SqlDataSource1.FilterParameters.Clear();
-                SqlDataSource1.FilterParameters.Add(new ControlParameter("0", txtSearch.ID, "Text"));
+               
+                SqlDataSource1.SelectCommand = "SELECT * FROM \"PROJECTS\" WHERE " +
+                    "PROJECT_ID LIKE '%' || :SearchTerm || '%' OR " +
+                    "PROJECT_NAME LIKE '%' || :SearchTerm || '%' OR " +
+                    "PROJECT_DESCRIPTION LIKE '%' || :SearchTerm || '%' OR " +
+                    "PROJECT_STATUS LIKE '%' || :SearchTerm || '%'";
+                SqlDataSource1.SelectParameters.Clear();
+                SqlDataSource1.SelectParameters.Add("SearchTerm", searchTerm);
             }
             else
             {
-                SqlDataSource1.FilterExpression = "";
-                SqlDataSource1.FilterParameters.Clear();
+               
+                SqlDataSource1.SelectCommand = "SELECT * FROM \"PROJECTS\"";
+                SqlDataSource1.SelectParameters.Clear();
             }
             GridView1.DataBind();
         }
@@ -42,16 +42,22 @@ namespace ProjectManagementSystem.BasicForms
             GridView1.DataBind();
         }
 
+        protected void FormView1_PageIndexChanging(object sender, FormViewPageEventArgs e)
+        {
+            FormView1.PageIndex = e.NewPageIndex;
+            FormView1.DataBind();
+        }
+
         protected string GetStatusBadgeClass(string status)
         {
             switch (status)
             {
-                case "Completed":
-                    return "success";
-                case "In Progress":
-                    return "primary";
                 case "Not Started":
                     return "secondary";
+                case "In Progress":
+                    return "primary";
+                case "Completed":
+                    return "success";
                 case "On Hold":
                     return "warning";
                 case "Cancelled":

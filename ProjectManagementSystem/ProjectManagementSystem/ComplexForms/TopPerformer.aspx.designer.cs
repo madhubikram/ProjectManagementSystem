@@ -24,6 +24,15 @@ namespace ProjectManagementSystem.ComplexForms
         protected global::System.Web.UI.WebControls.DropDownList ddlProjects;
 
         /// <summary>
+        /// fvProjectDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.FormView fvProjectDetails;
+
+        /// <summary>
         /// gvTopPerformers control.
         /// </summary>
         /// <remarks>
@@ -40,6 +49,15 @@ namespace ProjectManagementSystem.ComplexForms
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.SqlDataSource sdsProjects;
+
+        /// <summary>
+        /// sdsProjectDetails control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.SqlDataSource sdsProjectDetails;
 
         /// <summary>
         /// sdsTopPerformers control.

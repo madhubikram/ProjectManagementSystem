@@ -139,6 +139,7 @@
                     </asp:TemplateField>
                     <asp:BoundField DataField="PROJECT_ID" HeaderText="ID" ReadOnly="True" SortExpression="PROJECT_ID" />
                     <asp:BoundField DataField="PROJECT_NAME" HeaderText="Project" SortExpression="PROJECT_NAME" />
+                    <asp:BoundField DataField="PROJECT_DESCRIPTION" HeaderText="Description" SortExpression="PROJECT_DESCRIPTION" />
                     <asp:BoundField DataField="PROJECT_START_DATE" HeaderText="Start Date" DataFormatString="{0:yyyy-MM-dd}" SortExpression="PROJECT_START_DATE" />
                     <asp:BoundField DataField="PROJECT_DUE_DATE" HeaderText="Due Date" DataFormatString="{0:yyyy-MM-dd}" SortExpression="PROJECT_DUE_DATE" />
                     <asp:TemplateField HeaderText="Status" SortExpression="PROJECT_STATUS">
@@ -170,11 +171,11 @@
     </div>
     
     <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString2 %>" 
-        DeleteCommand="DELETE FROM &quot;PROJECTS&quot; WHERE &quot;PROJECT_ID&quot; = :PROJECT_ID" 
-        InsertCommand="INSERT INTO &quot;PROJECTS&quot; (&quot;PROJECT_ID&quot;, &quot;PROJECT_NAME&quot;, &quot;PROJECT_DESCRIPTION&quot;, &quot;PROJECT_START_DATE&quot;, &quot;PROJECT_DUE_DATE&quot;, &quot;PROJECT_STATUS&quot;) VALUES (:PROJECT_ID, :PROJECT_NAME, :PROJECT_DESCRIPTION, :PROJECT_START_DATE, :PROJECT_DUE_DATE, :PROJECT_STATUS)" 
+        DeleteCommand='DELETE FROM "PROJECTS" WHERE PROJECT_ID = :PROJECT_ID' 
+        InsertCommand='INSERT INTO "PROJECTS" (PROJECT_ID, PROJECT_NAME, PROJECT_DESCRIPTION, PROJECT_START_DATE, PROJECT_DUE_DATE, PROJECT_STATUS) VALUES (:PROJECT_ID, :PROJECT_NAME, :PROJECT_DESCRIPTION, :PROJECT_START_DATE, :PROJECT_DUE_DATE, :PROJECT_STATUS)' 
         ProviderName="<%$ ConnectionStrings:ConnectionString2.ProviderName %>" 
-        SelectCommand="SELECT * FROM &quot;PROJECTS&quot;" 
-        UpdateCommand="UPDATE &quot;PROJECTS&quot; SET &quot;PROJECT_NAME&quot; = :PROJECT_NAME, &quot;PROJECT_DESCRIPTION&quot; = :PROJECT_DESCRIPTION, &quot;PROJECT_START_DATE&quot; = :PROJECT_START_DATE, &quot;PROJECT_DUE_DATE&quot; = :PROJECT_DUE_DATE, &quot;PROJECT_STATUS&quot; = :PROJECT_STATUS WHERE &quot;PROJECT_ID&quot; = :PROJECT_ID">
+        SelectCommand='SELECT * FROM "PROJECTS"' 
+        UpdateCommand='UPDATE "PROJECTS" SET PROJECT_NAME = :PROJECT_NAME, PROJECT_DESCRIPTION = :PROJECT_DESCRIPTION, PROJECT_START_DATE = :PROJECT_START_DATE, PROJECT_DUE_DATE = :PROJECT_DUE_DATE, PROJECT_STATUS = :PROJECT_STATUS WHERE PROJECT_ID = :PROJECT_ID'>
         <DeleteParameters>
             <asp:Parameter Name="PROJECT_ID" Type="String" />
         </DeleteParameters>
